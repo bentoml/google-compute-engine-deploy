@@ -1,0 +1,5 @@
+{
+  "project_id": "your-project-id",
+  "zone": "us-central1-a",
+  "machine-type": "n1-standard-1"
+}
