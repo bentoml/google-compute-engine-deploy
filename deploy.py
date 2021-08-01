@@ -53,7 +53,7 @@ def deploy_to_compute_engine(bento_bundle_path, deployment_name, config_json):
             "--container-image",
             gcr_tag,
             "--machine-type",
-            deployment_config["machine-type"],
+            deployment_config["machine_type"],
             "--tags=bentoml-in",
         ]
     )
