@@ -25,22 +25,15 @@ def deploy_to_compute_engine(bento_bundle_path, deployment_name, config_json):
         ["gcloud", "builds", "submit", bento_bundle_path, "--tag", gcr_tag]
     )
 
-    print("Creating the firewall rules")
-    run_shell_command(
-        [
-            "gcloud",
-            "compute",
-            "firewall-rules",
-            "create",
-            "allow-bentoml",
-            "--action=ALLOW",
-            "--rules=tcp:5000",
-            "--source-ranges=0.0.0.0/0",
-            "--target-tags=bentoml-in",
-        ]
-    )
-
     print(f"Creating Cloud Engine instance [{service_name}]")
+    # check if gpu is included in config
+    gpu = []
+    if deployment_config.get("gpu_type") is not None:
+        gpu = [
+            f"--accelerator type={deployment_config['gpu_type']},"
+            f"count={deployment_config['gpu_count']}",
+            "--maintenace-policy TERMINATE",
+        ]
     run_shell_command(
         [
             "gcloud",
@@ -55,6 +48,22 @@ def deploy_to_compute_engine(bento_bundle_path, deployment_name, config_json):
             "--machine-type",
             deployment_config["machine_type"],
             "--tags=bentoml-in",
+            *gpu,
+        ]
+    )
+
+    print("Creating the firewall rules")
+    run_shell_command(
+        [
+            "gcloud",
+            "compute",
+            "firewall-rules",
+            "create",
+            "allow-bentoml",
+            "--action=ALLOW",
+            "--rules=tcp:5000",
+            "--source-ranges=0.0.0.0/0",
+            "--target-tags=bentoml-in",
         ]
     )
 

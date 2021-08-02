@@ -41,7 +41,11 @@ your models.
     ```bash
     $ python describe.py iristest
     ```
-    Make sure you note down the external IP to which we will be making the requests.
+    Make sure you note down the external IP to which we will be making the
+    requests. Once you have that to head over to port 5000 with that IP in the
+    browser to see the swagger UI to try out the various endpoints or use curl
+    to make requests.
+    
 3. Make sample request against deployed service
 
     ```bash
@@ -96,6 +100,13 @@ deploy_to_compute_engine(BENTO_BUNDLE_PATH, DEPLOYMENT_NAME, CONFIG_JSON)
 * `project_id`: The project ID for the GCP project you want to deploy to. Make sure the VM intances API is activated. 
 * `zone`: The zone to which you want to deploy to. To get the complete list of available zones run `gcloud compute zones list`
 * `machine_type`: This specifies the machine type you want to use. You can use different machine types based on the resource requirments of your model. To get a list of all the machine types available run `gcloud compute machine-types list`
+* `gpu_type`: Cloud compute also has support for adding GPU to the VM. Do note
+that that the gpu types you can use depends on your location and the machine
+type you have set. Check the [docs for
+google](https://cloud.google.com/compute/docs/gpus#restrictions) for more info.
+To get the list of all the GPU types supported run `gcloud compute
+accelerator-types list`
+* `gpu_count`: The number of GPUs you want to add to your VM instance.
 
 ### Update a deployment
 

@@ -1,5 +1,7 @@
 {
   "project_id": "your-project-id",
   "zone": "us-central1-a",
-  "machine_type": "n1-standard-1"
+  "machine_type": "n1-standard-1",
+  "gpu_type": "nvidia-tesla-k80",
+  "gpu_count": 2
 }
