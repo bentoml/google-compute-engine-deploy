@@ -2,14 +2,14 @@ import sys
 
 from bentoml.saved_bundle import load_bento_service_metadata
 
-from utils import (
+from .utils import (
     get_configuration_value,
     generate_compute_engine_names,
     run_shell_command,
 )
 
 
-def update_compute_engine(bento_bundle_path, deployment_name, config_json):
+def update(bento_bundle_path, deployment_name, config_json):
     bundle_metadata = load_bento_service_metadata(bento_bundle_path)
     deployment_config = get_configuration_value(config_json)
 
@@ -51,5 +51,5 @@ if __name__ == "__main__":
     deployment_name = sys.argv[2]
     config_json = sys.argv[3] if len(sys.argv) == 4 else "cloud_run_config.json"
 
-    update_compute_engine(bento_bundle_path, deployment_name, config_json)
+    update(bento_bundle_path, deployment_name, config_json)
     print("Update complete!")

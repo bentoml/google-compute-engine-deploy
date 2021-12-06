@@ -2,14 +2,14 @@ import sys
 
 from bentoml.saved_bundle import load_bento_service_metadata
 
-from utils import (
+from .utils import (
     get_configuration_value,
     generate_compute_engine_names,
     run_shell_command,
 )
 
 
-def deploy_to_compute_engine(bento_bundle_path, deployment_name, config_json):
+def deploy(bento_bundle_path, deployment_name, config_json):
     bundle_metadata = load_bento_service_metadata(bento_bundle_path)
     deployment_config = get_configuration_value(config_json)
 
@@ -77,5 +77,5 @@ if __name__ == "__main__":
     deployment_name = sys.argv[2]
     config_json = sys.argv[3] if sys.argv[3] else "cloud_engine_config.json"
 
-    deploy_to_compute_engine(bento_bundle_path, deployment_name, config_json)
+    deploy(bento_bundle_path, deployment_name, config_json)
     print("Deploy complete!")

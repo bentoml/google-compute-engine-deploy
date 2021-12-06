@@ -1,15 +1,13 @@
 import sys
 
-from ruamel.yaml import YAML
-
-from utils import (
+from .utils import (
     generate_compute_engine_names,
     run_shell_command,
     get_configuration_value,
 )
 
 
-def describe_compute_engine(deployment_name, config_json, return_json=False):
+def describe(deployment_name, config_json, return_json=False):
     service_name, _ = generate_compute_engine_names(deployment_name)
     deployment_config = get_configuration_value(config_json)
 
@@ -49,4 +47,4 @@ if __name__ == "__main__":
     deployment_name = sys.argv[1]
     config_json = sys.argv[2] if len(sys.argv) == 3 else "cloud_run_config.json"
 
-    describe_compute_engine(deployment_name, config_json)
+    describe(deployment_name, config_json)

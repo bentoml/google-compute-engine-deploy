@@ -2,15 +2,15 @@ import sys
 
 from ruamel.yaml import YAML
 
-from utils import (
+from .utils import (
     get_configuration_value,
     generate_compute_engine_names,
     run_shell_command,
 )
-from describe import describe_compute_engine
+from .describe import describe
 
 
-def delete_compute_engine(deployment_name, config_json):
+def delete(deployment_name, config_json):
     service_name, _ = generate_compute_engine_names(deployment_name)
     deployment_config = get_configuration_value(config_json)
     # get the image name for container in compute engine
@@ -72,4 +72,4 @@ if __name__ == "__main__":
     deployment_name = sys.argv[1]
     config_json = sys.argv[2] if sys.argv[2] else "cloud_engine_config.json"
 
-    delete_compute_engine(deployment_name, config_json)
+    delete(deployment_name, config_json)
