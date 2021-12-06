@@ -1,6 +1,6 @@
 OPERATOR_NAME = "google-compute-engine"
 
-OPERATOR_MODULE = "google-compute-engine"
+OPERATOR_MODULE = "google_compute_engine"
 
 OPERATOR_SCHEMA = {
     "project_id": {
