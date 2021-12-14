@@ -2,6 +2,27 @@
 
 ![Generic badge](https://img.shields.io/badge/Release-Alpha-<COLOR>.svg)
 
+YOU GOTTA SET IAM PERMISSIONS. READ HERE https://cloud.google.com/container-registry/docs/access-control
+
+GOTTA ENABLE THIS
+unknown: Service 'containerregistry.googleapis.com' is not enabled for consumer 'project:comp-eng-333821'.
+Pushing gcr.io/comp-eng-333821/irisclassifier:20210923152106_c95f2e
+The push refers to repository [gcr.io/comp-eng-333821/irisclassifier]
+
+ENABLE CLOUD BUILD API
+
+GIVE STORAGE ADMIN RLE UNDER IAM & ADMIN
+https://stackoverflow.com/questions/51410633/service-account-does-not-have-storage-objects-get-access-for-google-cloud-storag
+
+Go here for this
+https://console.cloud.google.com/projectselector2/apis/api/containerregistry.googleapis.com/overview?supportedpurview=project&authuser=1
+https://stackoverflow.com/questions/68139665/unknown-service-containerregistry-googleapis-com-is-not-enabled-for-consumer
+
+SHIFT YOUR GCLOUD PROJECT 
+https://stackoverflow.com/questions/57194481/why-dont-i-have-access-to-anything-in-my-gcp-project
+
+
+
 Google Compute Engine offers you a secure and costomizable compute service that lets you create and run virutal machines on Google's infrastructure. You can choose from a wide range of CPU, GPU and memory configurations to meet the needs of 
 your models. 
 

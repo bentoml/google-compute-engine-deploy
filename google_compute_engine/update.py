@@ -2,20 +2,18 @@ import sys
 
 from bentoml.saved_bundle import load_bento_service_metadata
 
-from utils import (
-    get_configuration_value,
+from .utils import (
     generate_compute_engine_names,
     run_shell_command,
 )
 
 
-def update_compute_engine(bento_bundle_path, deployment_name, config_json):
+def update(bento_bundle_path, deployment_name, compute_engine_config):
     bundle_metadata = load_bento_service_metadata(bento_bundle_path)
-    deployment_config = get_configuration_value(config_json)
 
     service_name, gcr_tag = generate_compute_engine_names(
         deployment_name,
-        deployment_config["project_id"],
+        compute_engine_config["project_id"],
         bundle_metadata.name,
         bundle_metadata.version,
     )
@@ -36,20 +34,8 @@ def update_compute_engine(bento_bundle_path, deployment_name, config_json):
             "--container-image",
             gcr_tag,
             "--zone",
-            deployment_config["zone"],
+            compute_engine_config["zone"],
         ]
     )
-
-
-if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        raise Exception(
-            "Please provide bundle path, deployment name and path to Cloud Run "
-            "config file (optional)"
-        )
-    bento_bundle_path = sys.argv[1]
-    deployment_name = sys.argv[2]
-    config_json = sys.argv[3] if len(sys.argv) == 4 else "cloud_run_config.json"
-
-    update_compute_engine(bento_bundle_path, deployment_name, config_json)
     print("Update complete!")
+

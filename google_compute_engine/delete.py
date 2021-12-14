@@ -2,19 +2,18 @@ import sys
 
 from ruamel.yaml import YAML
 
-from utils import (
+from .utils import (
     get_configuration_value,
     generate_compute_engine_names,
     run_shell_command,
 )
-from describe import describe_compute_engine
+from .describe import describe
 
 
-def delete_compute_engine(deployment_name, config_json):
+def delete(deployment_name, compute_engine_config):
     service_name, _ = generate_compute_engine_names(deployment_name)
-    deployment_config = get_configuration_value(config_json)
     # get the image name for container in compute engine
-    service_data = describe_compute_engine(service_name, config_json, return_json=True)
+    service_data = describe(service_name, compute_engine_config, return_json=True)
     yaml = YAML()
     repo_name = ''
     for item in service_data["metadata"]["items"]:
@@ -34,7 +33,7 @@ def delete_compute_engine(deployment_name, config_json):
             service_name,
             "--quiet",
             "--zone",
-            deployment_config["zone"],
+            compute_engine_config["zone"],
         ]
     )
 
@@ -62,14 +61,4 @@ def delete_compute_engine(deployment_name, config_json):
                 "--quiet",
             ]
         )
-
-
-if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        raise Exception(
-            "Please provide bento_bundle_path deployment_name and configuration json"
-        )
-    deployment_name = sys.argv[1]
-    config_json = sys.argv[2] if sys.argv[2] else "cloud_engine_config.json"
-
-    delete_compute_engine(deployment_name, config_json)
+    print("Deleted!")
