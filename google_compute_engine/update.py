@@ -2,11 +2,16 @@ from .deploy import build_and_push_bento
 from .utils import (
     generate_compute_engine_names,
     run_shell_command,
-    get_bento_tag
+    get_bento_tag,
+    console,
 )
 
 
 def update(bento_path, deployment_name, deployment_spec):
+    # start spinner
+    spinner = console.status(f"Updating {deployment_name}")
+    spinner.start()
+
     bento_tag = get_bento_tag(bento_path)
 
     service_name, gcr_tag = generate_compute_engine_names(
@@ -16,10 +21,11 @@ def update(bento_path, deployment_name, deployment_spec):
         bento_tag.version,
     )
 
-    print(f"Building and Pushing {bento_tag.name}")
+    spinner.update(f"Building and Pushing {bento_tag.name}")
     build_and_push_bento(bento_tag, gcr_tag)
+    console.print("Image build and pushed to Container Registry.")
 
-    print(f"Updating Cloud Engine instance [{service_name}]")
+    spinner.update(f"Updating Compute Engine instance [{service_name}]")
     run_shell_command(
         [
             "gcloud",
@@ -33,3 +39,4 @@ def update(bento_path, deployment_name, deployment_spec):
             deployment_spec["zone"],
         ]
     )
+    console.print("Updated Compute Engine")

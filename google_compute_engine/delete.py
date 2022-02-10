@@ -6,11 +6,16 @@ from .utils import (
     get_configuration_value,
     generate_compute_engine_names,
     run_shell_command,
+    console,
 )
 from .describe import describe
 
 
 def delete(deployment_name, deployment_spec):
+    # start the spinner animation
+    spinner = console.status(f"Deleting {deployment_name}")
+    spinner.start()
+
     service_name, _ = generate_compute_engine_names(deployment_name)
     # get the image name for container in compute engine
     service_data = describe(service_name, deployment_spec)
@@ -23,7 +28,7 @@ def delete(deployment_name, deployment_spec):
             img = img_info.get('spec').get('containers')[0].get('image')
             repo_name = img.split(":")[0]
 
-    print(f"Deleting Cloud Engine instance {service_name}")
+    spinner.update(f"Deleting Cloud Engine instance {service_name}")
     run_shell_command(
         [
             "gcloud",
@@ -36,11 +41,13 @@ def delete(deployment_name, deployment_spec):
             deployment_spec["zone"],
         ]
     )
+    console.print("Compute Engine deleted.")
 
-    print("Deleting firewall rules")
+    spinner.update("Deleting firewall rules")
     run_shell_command(
         ["gcloud", "compute", "firewall-rules", "delete", "allow-bentoml", "--quiet"]
     )
+    console.print("firewall rules deleted!")
 
     # get all images in container registry
     images, _ = run_shell_command(
@@ -49,7 +56,7 @@ def delete(deployment_name, deployment_spec):
 
     # loop through all the images in the container registry and delete them.
     for i, img in enumerate(images):
-        print(f"\rDeleting image {i+1}/{len(images)}", end="")
+        spinner.update(f"Deleting image {i+1}/{len(images)}")
         run_shell_command(
             [
                 "gcloud",
@@ -61,4 +68,5 @@ def delete(deployment_name, deployment_spec):
                 "--quiet",
             ]
         )
-    print("Deleted!")
+    console.print("GCR images deleted!")
+    spinner.stop()

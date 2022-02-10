@@ -5,8 +5,11 @@ import os
 
 import fs
 import docker
+from rich.console import Console
 from bentoml.bentos import Bento
 
+# initialize the rich console for the project
+console = Console(highlight=False)
 
 def run_shell_command(command, cwd=None, env=None, shell_mode=False):
     proc = subprocess.Popen(

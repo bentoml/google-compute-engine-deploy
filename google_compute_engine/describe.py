@@ -19,5 +19,23 @@ def describe(deployment_name, deployment_spec):
             "--format=json",
         ]
     )
-    
-    return info_dict
+
+    IMPORTANT_PARAMS = [
+        "cpuPlatform",
+        "creationTimestamp",
+        "id",
+        "kind",
+        "labels",
+        "lastStartTimestamp",
+        "machineType",
+        "name",
+        "networkInterfaces",
+        "status",
+        "zone",
+    ]
+
+    deployment_info = {}
+    for param in IMPORTANT_PARAMS:
+        deployment_info[param] = info_dict[param]
+
+    return deployment_info
