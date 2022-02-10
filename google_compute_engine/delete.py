@@ -10,10 +10,10 @@ from .utils import (
 from .describe import describe
 
 
-def delete(deployment_name, compute_engine_config):
+def delete(deployment_name, deployment_spec):
     service_name, _ = generate_compute_engine_names(deployment_name)
     # get the image name for container in compute engine
-    service_data = describe(service_name, compute_engine_config, return_json=True)
+    service_data = describe(service_name, deployment_spec)
     yaml = YAML()
     repo_name = ''
     for item in service_data["metadata"]["items"]:
@@ -33,7 +33,7 @@ def delete(deployment_name, compute_engine_config):
             service_name,
             "--quiet",
             "--zone",
-            compute_engine_config["zone"],
+            deployment_spec["zone"],
         ]
     )
 
