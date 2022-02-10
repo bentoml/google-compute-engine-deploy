@@ -28,6 +28,7 @@ def describe(deployment_name, deployment_spec):
         "labels",
         "lastStartTimestamp",
         "machineType",
+        "metadata",
         "name",
         "networkInterfaces",
         "status",
