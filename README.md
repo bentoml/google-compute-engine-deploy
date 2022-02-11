@@ -10,6 +10,16 @@ Google Compute Engine offers you a secure and costomizable compute service that 
 your models. 
 
 <!--ts-->
+
+## Table of Contents
+
+   * [Prerequisites](#prerequisites)
+   * [Quickstart with bentoctl](#quickstart-with-bentoctl)
+   * [Quickstart with scripts](#quickstart-with-scripts)
+   * [Available config options for Compute Engine deployements](#available-config-options-for-compute-engine-deployements)
+
+<!-- Added by: jjmachan, at: Friday 11 February 2022 12:28:28 PM IST -->
+
 <!--te-->
 ## Prerequisites
 
