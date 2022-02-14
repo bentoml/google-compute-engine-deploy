@@ -6,7 +6,7 @@ import os
 import fs
 import docker
 from rich.console import Console
-from bentoml.bentos import Bento
+from bentoml.bentos import Bento, containerize
 
 # initialize the rich console for the project
 console = Console(highlight=False)
@@ -83,3 +83,10 @@ def get_metadata(path: str):
     metadata["python_version"] = ".".join(python_version.split(".")[:2])
 
     return metadata
+
+
+def build_and_push_bento(bento_tag, gcr_tag):
+    containerize(bento_tag.name, docker_image_tag=gcr_tag)
+    # docker login to gcr.io
+    run_shell_command(["gcloud", "auth", "configure-docker", "gcr.io", "--quiet"])
+    push_image(gcr_tag)

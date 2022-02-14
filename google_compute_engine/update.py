@@ -1,9 +1,9 @@
-from .deploy import build_and_push_bento
 from .utils import (
     generate_compute_engine_names,
     run_shell_command,
     get_bento_tag,
     console,
+    build_and_push_bento,
 )
 
 
