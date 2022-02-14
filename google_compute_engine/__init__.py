@@ -8,6 +8,6 @@ __all__ = [
     "deploy",
     "update",
     "describe",
-    "update",
+    "delete",
     "get_configuration_value",
 ]
