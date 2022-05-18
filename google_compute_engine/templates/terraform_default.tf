@@ -28,11 +28,13 @@ variable "project_id" {
 }
 
 variable "zone" {
-    default = "us-central1-a"
+  description = "GCP project to use for creating deployment."
+  default     = "us-central1-a"
 }
 
 variable "machine_type" {
-    default = "n1-standard-1"
+  description = "The machine type for compute engine."
+  default     = "n1-standard-1"
 }
 
 ################################################################################
@@ -41,15 +43,16 @@ variable "machine_type" {
 
 # Data source for container registry image
 data "google_container_registry_image" "bento_service" {
-  name = var.image_repository
+  name    = var.image_repository
+  project = var.project_id
 }
 
 module "gce-container" {
-# https://registry.terraform.io/modules/terraform-google-modules/container-vm/google/latest
+  # https://registry.terraform.io/modules/terraform-google-modules/container-vm/google/latest
   source         = "terraform-google-modules/container-vm/google"
   cos_image_name = "cos-stable-77-12371-89-0"
   container = {
-        image = "${data.google_container_registry_image.bento_service.image_url}:${var.image_version}"
+    image = "${data.google_container_registry_image.bento_service.image_url}:${var.image_version}"
     env = [
       {
         name  = "BENTOML_PORT"
@@ -62,11 +65,11 @@ module "gce-container" {
 }
 
 resource "google_compute_instance" "vm" {
-  project      = var.project_id
-  name         = "${var.deployment_name}-instance"
-  machine_type = "n1-standard-1"
-  zone         = "us-central1-a"
-    allow_stopping_for_update = true
+  project                   = var.project_id
+  name                      = "${var.deployment_name}-instance"
+  machine_type              = "n1-standard-1"
+  zone                      = "us-central1-a"
+  allow_stopping_for_update = true
 
   boot_disk {
     initialize_params {
@@ -98,16 +101,16 @@ resource "google_compute_instance" "vm" {
 }
 
 resource "google_compute_firewall" "default" {
- name    = "bentoml-firewall"
- network = "default"
-  project      = var.project_id
+  name    = "bentoml-firewall"
+  network = "default"
+  project = var.project_id
 
- allow {
-   protocol = "tcp"
-   ports    = ["3000"]
- }
+  allow {
+    protocol = "tcp"
+    ports    = ["3000"]
+  }
 
- source_ranges = ["0.0.0.0/0"]
+  source_ranges = ["0.0.0.0/0"]
 }
 
 ################################################################################
