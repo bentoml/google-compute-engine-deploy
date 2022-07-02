@@ -117,7 +117,7 @@ resource "google_compute_firewall" "default" {
 # Output value definitions
 ################################################################################
 
-output "Endpoint" {
+output "endpoint" {
   description = "IP address for the instance"
   value = "http://${google_compute_instance.vm.network_interface.0.access_config.0.nat_ip}:3000"
 }
