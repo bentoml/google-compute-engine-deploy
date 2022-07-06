@@ -98,6 +98,24 @@ resource "google_compute_instance" "vm" {
       "https://www.googleapis.com/auth/cloud-platform",
     ]
   }
+
+  provisioner "local-exec" {
+    command = <<-EOT
+        attempt_counter=0
+        max_attempts=20
+        printf 'waiting for server to start'
+        until $(curl --output /dev/null --silent --head --fail http://${self.network_interface.0.access_config.0.nat_ip}:3000"); do
+            if [ $attempt_counter -eq $max_attempts ];then
+              echo "Max attempts reached"
+              exit 1
+            fi
+
+            printf '.'
+            attempt_counter=$(($attempt_counter+1))
+            sleep 15
+        done
+        EOT
+  }
 }
 
 resource "google_compute_firewall" "default" {
