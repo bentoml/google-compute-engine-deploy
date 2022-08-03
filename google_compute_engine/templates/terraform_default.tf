@@ -1,3 +1,14 @@
+# main.tf
+terraform {
+  required_version = ">= 1.0"
+
+  required_providers {
+    google = ">= 3.3"
+  }
+
+provider "google" {
+  project = var.project_id
+}
 ################################################################################
 # Input variable definitions
 ################################################################################
@@ -28,7 +39,7 @@ variable "project_id" {
 }
 
 variable "zone" {
-  description = "GCP project to use for creating deployment."
+  description = "Zone in which the VM should be created."
   default     = "us-central1-a"
 }
 
@@ -45,6 +56,10 @@ variable "machine_type" {
 data "google_container_registry_image" "bento_service" {
   name    = var.image_repository
   project = var.project_id
+}
+
+# using the default service account to create the instance
+data "google_compute_default_service_account" "default" {
 }
 
 module "gce-container" {
@@ -67,8 +82,8 @@ module "gce-container" {
 resource "google_compute_instance" "vm" {
   project                   = var.project_id
   name                      = "${var.deployment_name}-instance"
-  machine_type              = "n1-standard-1"
-  zone                      = "us-central1-a"
+  machine_type              = var.machine_type
+  zone                      = var.zone
   allow_stopping_for_update = true
 
   boot_disk {
@@ -93,7 +108,7 @@ resource "google_compute_instance" "vm" {
   }
 
   service_account {
-    email = "558210432501-compute@developer.gserviceaccount.com"
+    email = data.google_compute_default_service_account.default.email
     scopes = [
       "https://www.googleapis.com/auth/cloud-platform",
     ]
