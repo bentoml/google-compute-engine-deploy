@@ -1,6 +1,8 @@
-<div align="center">
-    <h1>Google Compute Engine Operator</h1>
-</div>
+## ⚠️ BentoCTL project has been deprecated
+
+Plese see the latest BentoML documentation on OCI-container based deployment workflow: https://docs.bentoml.com/
+
+## Google Compute Engine Operator
 
 Google Compute Engine offers you a secure and costomizable compute service that lets you create and run virutal machines on Google's infrastructure. You can choose from a wide range of CPU, GPU and memory configurations to meet the needs of your models. With the combination of [BentoML](https://github.com/bentoml/BentoML) and [bentoctl](https://github.com/bentoml/bentoctl), you can easily deploy models created with your favourite ML frameworks and easily manage the infrastructure via terraform.
 
